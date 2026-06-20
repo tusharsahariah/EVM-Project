@@ -59,8 +59,3 @@ EVM-Project/
 ## Author
 
 Tushar Kanti Sahariah
-<<<<<<< HEAD
-=======
-B.Tech, Electronics & Telecommunication Engineering
-Assam Engineering College
->>>>>>> efab62c582536ce9401561e62f509d03eff5412e
