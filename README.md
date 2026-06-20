@@ -50,11 +50,12 @@ EVM-Project/
 
 ## Future Enhancements
 
-* Administrative Control Panel
-* Vote Result Display
-* EEPROM-Based Vote Storage
-* Data Integrity Verification
-* Enhanced User Feedback
+* Candidate Selection
+* Vote Confirmation
+* Voter Authentication
+* Duplicate Vote Prevention
+* Voting Pause Control
+* Voting Resume Function
 
 ## Author
 

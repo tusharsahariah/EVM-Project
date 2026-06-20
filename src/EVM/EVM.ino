@@ -28,7 +28,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 int A = 13;
 int B = 12;
 int C = 11;
-int enter = 10;
+int resume_button=10;
 
 int ledA = A3;
 int ledB = A2;
@@ -38,16 +38,16 @@ int ledE = A0;
 //===================== VOTER DATABASE =====================
 
 String validIDs[10] = {
-  "101ABC",
-  "102DEF",
-  "103GHI",
-  "104JKL",
-  "105MNO",
-  "106PQR",
-  "107STU",
-  "108VWX",
-  "109YZA",
-  "110BCD"
+  "101ABCD",
+  "102AABB",
+  "103BCDA",
+  "104CDAB",
+  "105DDDD",
+  "106ABAB",
+  "107BCBC",
+  "108CDCD",
+  "109DADA",
+  "110ABDC"
 };
 
 bool voted[10] = {false};
@@ -65,9 +65,9 @@ enum State {
   STATE_SELECT_CANDIDATE,
   STATE_INVALID_ID,
   STATE_ALREADY_VOTED,
-  STATE_VOTE_SUCCESS
+  STATE_VOTE_SUCCESS,
+  STATE_VOTING_CLOSED
 };
-
 State currentState = STATE_IDLE;
 
 //===================== FUNCTIONS =====================
@@ -76,9 +76,6 @@ void showHome() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("ENTER YOUR ID");
-
-  lcd.setCursor(0, 1);
-  lcd.print("******");
 }
 
 int findID(String id) {
@@ -94,8 +91,10 @@ void showInvalidID() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("INVALID ID");
+  digitalWrite(ledE, HIGH);
 
   delay(3000);
+  digitalWrite(ledE, LOW);
 
   enteredID = "";
   showHome();
@@ -106,18 +105,20 @@ void showAlreadyVoted() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("ALREADY VOTED");
-
+  digitalWrite(ledE, HIGH);
   delay(3000);
+  digitalWrite(ledE, LOW);
 
   enteredID = "";
   showHome();
   currentState = STATE_IDLE;
 }
 
-void showVoteSuccess() {
+void showVoteSuccess()
+{
   lcd.clear();
 
-  lcd.setCursor(0, 0);
+  lcd.setCursor(0,0);
   lcd.print("VOTE CASTED");
 
   delay(3000);
@@ -126,11 +127,33 @@ void showVoteSuccess() {
   selectedCandidate = '\0';
   currentVoterIndex = -1;
 
+  currentState = STATE_VOTING_CLOSED;
+}
+void showVotingClosed()
+{
+  lcd.clear();
+
+  lcd.setCursor(0,0);
+  lcd.print("VOTING PAUSED");
+
+  while(digitalRead(resume_button) == HIGH)
+  {
+    // Wait for admin
+  }
+
+  while(digitalRead(resume_button) == LOW);
+
+  lcd.clear();
+
+  lcd.setCursor(0,0);
+  lcd.print("VOTING RESUMED");
+
+  delay(1000);
+
   showHome();
 
   currentState = STATE_IDLE;
 }
-
 void handleIDEntry() {
 
   char key = k.getKey();
@@ -139,7 +162,7 @@ void handleIDEntry() {
 
     if (isalnum(key)) {
 
-      if (enteredID.length() < 6) {
+      if (enteredID.length() < 7) {
 
         enteredID += key;
         lcd.setCursor (0,1);
@@ -162,7 +185,7 @@ void handleIDEntry() {
 
     if (key == '#') {
 
-      if (enteredID.length() == 6) {
+      if (enteredID.length() == 7) {
 
         currentVoterIndex = findID(enteredID);
 
@@ -227,35 +250,36 @@ void handleCandidateSelection() {
   }
 }
 
-void selectCandidate() {
-
+void selectCandidate()
+{
   lcd.clear();
 
-  lcd.setCursor(0, 0);
+  lcd.setCursor(0,0);
   lcd.print("CANDIDATE ");
   lcd.print(selectedCandidate);
 
-  lcd.setCursor(0, 1);
-  lcd.print("Press Enter");
+  lcd.setCursor(0,1);
+  lcd.print("Enter to Confirm");
 
   unsigned long startTime = millis();
 
-  while (millis() - startTime < 10000) {
+  while(millis() - startTime < 10000)
+  {
+    char key = k.getKey();
 
-    if (digitalRead(enter) == LOW) {
-
-      while (digitalRead(enter) == LOW);
-
+    if(key == '#')
+    {
       voted[currentVoterIndex] = true;
 
       digitalWrite(ledA, LOW);
       digitalWrite(ledB, LOW);
       digitalWrite(ledC, LOW);
+
       digitalWrite(ledE, HIGH);
 
       lcd.clear();
 
-      lcd.setCursor(0, 0);
+      lcd.setCursor(0,0);
       lcd.print("VOTED TO ");
       lcd.print(selectedCandidate);
 
@@ -276,7 +300,7 @@ void selectCandidate() {
 
   lcd.clear();
 
-  lcd.setCursor(0, 0);
+  lcd.setCursor(0,0);
   lcd.print("TIME OUT");
 
   delay(3000);
@@ -285,13 +309,12 @@ void selectCandidate() {
 
   lcd.clear();
 
-  lcd.setCursor(0, 0);
+  lcd.setCursor(0,0);
   lcd.print("SELECT");
 
-  lcd.setCursor(0, 1);
+  lcd.setCursor(0,1);
   lcd.print("CANDIDATE");
 }
-
 //===================== SETUP =====================
 
 void setup() {
@@ -299,7 +322,7 @@ void setup() {
   pinMode(A, INPUT_PULLUP);
   pinMode(B, INPUT_PULLUP);
   pinMode(C, INPUT_PULLUP);
-  pinMode(enter, INPUT_PULLUP);
+  pinMode(resume_button, INPUT_PULLUP);
 
   pinMode(ledA, OUTPUT);
   pinMode(ledB, OUTPUT);
@@ -315,12 +338,11 @@ void setup() {
 }
 
 //===================== LOOP =====================
-
 void loop() {
 
   switch (currentState) {
 
-    case IDLE:
+    case STATE_IDLE:
       handleIDEntry();
       break;
 
@@ -338,6 +360,9 @@ void loop() {
 
     case STATE_VOTE_SUCCESS:
       showVoteSuccess();
+      break;
+    case STATE_VOTING_CLOSED:
+      showVotingClosed();
       break;
   }
 }
