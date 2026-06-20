@@ -2,102 +2,36 @@
 
 ## Overview
 
-This project is an Arduino-based Electronic Voting Machine (EVM) developed as part of an embedded systems project. The system allows a user to select a candidate and confirm the vote using a dedicated Enter button.
+This project implements an Arduino-based Electronic Voting Machine (EVM) designed to provide a secure and reliable voting process. The system authenticates voters, prevents duplicate voting, records votes, and provides user feedback through an LCD interface.
 
-This repository documents the development of the project stage by stage.
+## Features
 
----
-
-## Current Stage
-
-### Stage 1 - Basic Candidate Selection and Vote Confirmation
-
-### Implemented Features
-
-* Candidate A, B, and C selection using push buttons
-* 16x2 I2C LCD display interface
-* Vote confirmation using Enter button
-* 10-second confirmation timeout
-* Vote acknowledgement message
-* Automatic return to home screen after voting
-
----
+* Candidate Selection
+* Vote Confirmation
+* Timeout Handling
+* Voter ID Authentication
+* Invalid ID Detection
+* Duplicate Vote Prevention
 
 ## Components Used
 
 * Arduino Uno
-* 16x2 I2C LCD Display
-* Push Buttons (A, B, C, Enter)
-* Breadboard
-* Jumper Wires
-
----
-
-## Pin Configuration
-
-| Component          | Arduino Pin |
-| ------------------ | ----------- |
-| Candidate A Button | D11         |
-| Candidate B Button | D10         |
-| Candidate C Button | D9          |
-| Enter Button       | D8          |
-| LCD SDA            | A4          |
-| LCD SCL            | A5          |
-
----
+* 16x2 LCD Display (I2C)
+* 4x4 Keypad
+* Push Buttons
+* LEDs
+* Buzzer
+* Breadboard and Jumper Wires
 
 ## Working Principle
 
-1. System displays:
-
-   ```
-   SELECT
-   CANDIDATE
-   ```
-
-2. User presses Candidate A, B, or C button.
-
-3. LCD displays:
-
-   ```
-   CANDIDATE X
-   Press Enter
-   ```
-
-4. User must press Enter within 10 seconds.
-
-5. If Enter is pressed:
-
-   * Vote is confirmed.
-   * LCD displays:
-
-     ```
-     VOTED TO X
-     ```
-
-6. If Enter is not pressed within 10 seconds:
-
-   * Vote is cancelled.
-   * LCD displays:
-
-     ```
-     TIME OUT
-     ```
-
-7. System automatically returns to the home screen.
-
----
-
-## Development Timeline
-
-* [x] Stage 1 - Basic Candidate Selection and Confirmation
-* [ ] Stage 2 - LCD Improvements
-* [ ] Stage 3 - Vote Counting
-* [ ] Stage 4 - Admin Functions
-* [ ] Stage 5 - EEPROM Storage
-* [ ] Final Version
-
----
+1. The voter enters their voter ID using the keypad.
+2. The system verifies the entered ID against the stored voter database.
+3. Invalid IDs are rejected.
+4. Previously used IDs are blocked from voting again.
+5. Valid voters are allowed to select a candidate.
+6. The voter confirms the selected candidate.
+7. The vote is recorded and the voter session ends.
 
 ## Project Structure
 
@@ -110,17 +44,18 @@ EVM-Project/
 │   └── EVM.ino
 │
 └── tinkercad_stages/
-    └── Stage_1.png
+    ├── Stage_1.png
+    └── Stage_2.png
 ```
 
----
+## Future Enhancements
 
-## Stage 1 Circuit
+* Administrative Control Panel
+* Vote Result Display
+* EEPROM-Based Vote Storage
+* Data Integrity Verification
+* Enhanced User Feedback
 
-![Stage 1 Circuit](tinkercad_stages/Stage_1.png)
+## Author
 
----
-
-## Current Status
-
-The repository currently contains the first working prototype of the Electronic Voting Machine. Future stages will include vote counting, admin controls, EEPROM storage, and additional security features.
+Tushar Kanti Sahariah
