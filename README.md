@@ -8,10 +8,10 @@ This project implements an Arduino-based Electronic Voting Machine (EVM) designe
 
 * Candidate Selection
 * Vote Confirmation
-* Timeout Handling
-* Voter ID Authentication
-* Invalid ID Detection
+* Voter Authentication
 * Duplicate Vote Prevention
+* Voting Pause Control
+* Voting Resume Function
 
 ## Components Used
 
@@ -50,12 +50,11 @@ EVM-Project/
 
 ## Future Enhancements
 
-* Candidate Selection
-* Vote Confirmation
-* Voter Authentication
-* Duplicate Vote Prevention
-* Voting Pause Control
-* Voting Resume Function
+*Administrative Control Panel
+*Vote Result Display
+*EEPROM-Based Vote Storage
+*Data Integrity Verification
+*Enhanced User Feedback
 
 ## Author
 
