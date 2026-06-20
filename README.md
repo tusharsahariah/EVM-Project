@@ -12,6 +12,13 @@ This project implements an Arduino-based Electronic Voting Machine (EVM) designe
 * Duplicate Vote Prevention
 * Voting Pause Control
 * Voting Resume Function
+* Administrative Authentication
+* Voting Start and Stop Control
+* Vote Counting
+* Result Display
+* Checksum Generation
+* Invalid Voter Detection
+
 
 ## Components Used
 
@@ -25,36 +32,25 @@ This project implements an Arduino-based Electronic Voting Machine (EVM) designe
 
 ## Working Principle
 
-1. The voter enters their voter ID using the keypad.
-2. The system verifies the entered ID against the stored voter database.
-3. Invalid IDs are rejected.
-4. Previously used IDs are blocked from voting again.
-5. Valid voters are allowed to select a candidate.
-6. The voter confirms the selected candidate.
-7. The vote is recorded and the voter session ends.
+1. Administrator authenticates using predefined passwords.
+2. Administrator starts the voting process.
+3. Voters enter their voter ID using the keypad.
+4. The system verifies the voter ID against the stored database.
+5. Invalid or previously used IDs are rejected.
+6. Valid voters are allowed to select a candidate.
+7. The vote is recorded and counted.
+8. Voting pauses until the administrator resumes the process.
+9. The administrator can stop voting or view results through the admin menu.
+10. A checksum is generated for basic vote integrity verification.
 
-## Project Structure
-
-```text
-EVM-Project/
-│
-├── README.md
-│
-├── src/
-│   └── EVM.ino
-│
-└── tinkercad_stages/
-    ├── Stage_1.png
-    └── Stage_2.png
-```
 
 ## Future Enhancements
 
-*Administrative Control Panel
-*Vote Result Display
-*EEPROM-Based Vote Storage
-*Data Integrity Verification
-*Enhanced User Feedback
+* EEPROM-Based Vote Storage
+* Data Integrity Verification
+* Buzzer-Based User Feedback
+* Enhanced Error Handling
+* Persistent Vote Recovery After Power Loss
 
 ## Author
 
