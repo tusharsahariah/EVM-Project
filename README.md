@@ -94,13 +94,13 @@ This project implements a secure Arduino-based Electronic Voting Machine (EVM) w
 
 ##  🔌Circuit Diagram
 
-![Final Circuit Diagram](circuit_versions/final version.png)
+![Final Circuit Diagram](circuit_versions/final_version.png)
 
 ---
 
 ##  📊 Flowchart
 
-![System Flowchart](flowchart/EVM flowchart.png)
+![System Flowchart](flowchart/EVM_flowchart.png)
 
 ---
 
