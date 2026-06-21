@@ -106,7 +106,7 @@ This project implements a secure Arduino-based Electronic Voting Machine (EVM) w
 
 ## 🖼️ Hardware Implementation
 
-![Hardware Setup](images/final_hardware.jpg)
+![Hardware Setup](images/final_hardware.jpeg)
 
 ---
 
